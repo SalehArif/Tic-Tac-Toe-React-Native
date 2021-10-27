@@ -1,15 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, Button, Alert } from 'react-native';
+import { StyleSheet, Text, View, Button, Alert, Pressable } from 'react-native';
 
-const Name = (props) => {
-  return(
-   <Text style={styles.sep}>{props.name}</Text>
-  )
-}
+
 const MainComp = ()=>{
   const [getTurn,setTurn] = React.useState(true)
-  const [getPlayer,setPlayer] = React.useState("")
+  const [getPlayer,setPlayer] = React.useState("NaN")
   const [getOn,setOn] = React.useState(false)
   const abc = ()=> {
   if(getTurn===true){
@@ -25,22 +21,22 @@ const MainComp = ()=>{
   return(
     <View style={{width:'100%'}}>
       <View style={{flexDirection:'row',width:'100%'}}>
-      <Button title={getPlayer} onPress = {()=> abc()} disabled={getOn}/>
-      <Button title="" onPress = {()=> {}}/>
-      <Button title="" onPress = {()=> {}}/>
+      <Pressable style={styles.but} onPress = {()=> abc()} disabled={getOn}> <Text> {getPlayer}</Text> </Pressable>
+      <Pressable style={styles.but} onPress = {()=> abc()} disabled={getOn}> <Text>{getPlayer}</Text> </Pressable>
+      <Pressable style={styles.but} onPress = {()=> abc()} disabled={getOn} > <Text>{getPlayer}</Text> </Pressable>
 
       </View>
       <View style={{flexDirection:'row'}}>
 
-      <Button title="" onPress = {()=> {}}/>
-      <Button title="" onPress = {()=> {}}/>
-      <Button title="" onPress = {()=> {}}/>
+      <Pressable style={styles.but} onPress = {()=> abc()} disabled={getOn}> <Text>{getPlayer}</Text> </Pressable>
+      <Pressable style={styles.but} onPress = {()=> abc()} disabled={getOn}> <Text>{getPlayer}</Text> </Pressable>
+      <Pressable style={styles.but} onPress = {()=> abc()} disabled={getOn}> <Text>{getPlayer}</Text> </Pressable>
       </View>
       <View style={{flexDirection:'row'}}>
 
-      <Button title="" onPress = {()=> {}}/>
-      <Button title="" onPress = {()=> {}}/>
-      <Button title="" onPress = {()=> {}}/>
+      <Pressable style={styles.but} onPress = {()=> abc()} disabled={getOn}> <Text>{getPlayer}</Text> </Pressable>
+      <Pressable style={styles.but} onPress = {()=> abc()} disabled={getOn}> <Text>{getPlayer}</Text> </Pressable>
+      <Pressable style={styles.but} onPress = {()=> abc()} disabled={getOn}> <Text>{getPlayer}</Text> </Pressable>
       </View>
     </View>
 
@@ -92,6 +88,9 @@ const styles = StyleSheet.create({
   sep: {
     marginBottom: 10,
     fontSize: 20    
+  },
+  but:{
+    borderWidth:1, backgroundColor:'blue',width:50, borderColor:'white', alignItems:'center'
   }
 });
 
