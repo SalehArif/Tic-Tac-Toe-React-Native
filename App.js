@@ -2,6 +2,46 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, Button, Alert, Pressable } from 'react-native';
 
+const win = (show)=>{
+  //Columns
+  var winner=""
+  if(show[0]!=" " && show[0]==show[3] && show[3]==show[6]){
+    winner=show[0]
+    return winner
+  }
+  else if(show[1]!=" " && show[1]==show[4] && show[4]==show[7]){
+    winner=show[1]
+    return winner
+  }
+  else if(show[2]!=" " && show[2]==show[5] && show[5]==show[8]){
+    winner = show[2]
+    return winner
+  }
+  //Rows
+  else if(show[0]!=" " && show[0]==show[1] && show[1]==show[2]){
+    winner= show[0]
+    return winner
+  }
+  else if(show[3]!=" " && show[3]==show[4] && show[4]==show[5]){
+    winner = show[3]
+    return winner
+  }
+  else if(show[6]!=" " && show[6]==show[7] && show[7]==show[8]){
+    winner= show[6]
+    return winner
+  }
+  
+  //diagonals
+  else if(show[0]!=" " && show[0]==show[4] && show[4]==show[8]){
+    winner=show[0]
+    return winner
+  }
+  else if(show[2]!=" " && show[2]==show[4] && show[4]==show[6]){
+    winner=show[2]
+    return winner
+  }
+  return ""
+}
 
 const MainComp = (props)=>{
   const [getTurn,setTurn] = React.useState(true)
@@ -30,45 +70,7 @@ const MainComp = (props)=>{
   var show = board.slice()
   var on = getOn1.slice()
   var winner = ""
-  const win = ()=>{
-    //Columns
-    if(show[0]!=" " && show[0]==show[3] && show[3]==show[6]){
-      winner=show[0]
-      return true
-    }
-    else if(show[1]!=" " && show[1]==show[4] && show[4]==show[7]){
-      winner=show[1]
-      return true
-    }
-    else if(show[2]!=" " && show[2]==show[5] && show[5]==show[8]){
-      winner = show[2]
-      return true
-    }
-    //Rows
-    else if(show[0]!=" " && show[0]==show[1] && show[1]==show[2]){
-      winner= show[0]
-      return true
-    }
-    else if(show[3]!=" " && show[3]==show[4] && show[4]==show[5]){
-      winner = show[3]
-      return true
-    }
-    else if(show[6]!=" " && show[6]==show[7] && show[7]==show[8]){
-      winner= show[6]
-      return true
-    }
-    
-    //diagonals
-    else if(show[0]!=" " && show[0]==show[4] && show[4]==show[8]){
-      winner=show[0]
-      return true
-    }
-    else if(show[2]!=" " && show[2]==show[4] && show[4]==show[6]){
-      winner=show[2]
-      return true
-    }
-    
-  }
+  
   return(
     <View style={{width:'100%'}}>
       <Text>Player 1: X</Text>
@@ -91,7 +93,7 @@ const MainComp = (props)=>{
       <Pressable style={styles.but} onPress = {()=> abc(8)} disabled={on[8]}> <Text>{show[8]}</Text> </Pressable>
       </View>
       <Text>Player 2: O</Text>
-      <Text>{win() ? props.func(winner):""}</Text>
+      <Text>{win(show)=="X" ? props.func("X"): win(show)=="O"? props.func("O"):""}</Text>
     </View>
 
   )
@@ -116,13 +118,13 @@ const StartComp = ()=>{
 
   const [isStarted,Start] = React.useState(false)
   const [won,setWon] = React.useState(false)
+  const [winner,setWinner] = React.useState("")
   const but =   <Button title="Start" onPress = {()=> {Start(true)}}/>
-  let ans = ""
+  // let ans = ""
   const calc =   <MainComp/>
 
   const passfunc = (winner)=>{
-    ans=winner
-    console.log(ans)
+    setWinner(winner)
     setWon(true)
   }
   return (
@@ -131,7 +133,7 @@ const StartComp = ()=>{
         <View style={styles.lefte}>
           {!isStarted && <Button title="Start" onPress = {()=> {Start(true)}}/>}
           {isStarted && !won && <MainComp func={passfunc}/>}
-          {won && <Winscreen winner={ans}/>}
+          {won && <Winscreen winner={winner}/>}
         {/* {!isStarted? but:null}
         {isStarted? calc:null} */}
         </View>
