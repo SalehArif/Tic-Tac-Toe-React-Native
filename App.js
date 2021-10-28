@@ -3,43 +3,104 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, Alert, Pressable } from 'react-native';
 
 
-const MainComp = ()=>{
+const MainComp = (props)=>{
   const [getTurn,setTurn] = React.useState(true)
-  const [getPlayer,setPlayer] = React.useState("NaN")
-  const [getOn,setOn] = React.useState(false)
-  const abc = ()=> {
+  const [board,setBoard] = React.useState([" "," "," "," "," "," "," "," "," "])
+  const [getOn1,setOn1] = React.useState([false,false,false,false,false,false,false,false,false])
+  
+  const abc = (n)=> {
+
+  let arr = board.slice()
+  let dis = getOn1.slice()
   if(getTurn===true){
-    setPlayer("X")
+    // setPlayer("X")
+    arr[n]="X"
     setTurn(false)
   }
   else{
-    setPlayer("O")
+    // setPlayer("O")
+    arr[n] = "O"
     setTurn(true)  
   }
-  setOn(true)
+  setBoard(arr)
+  dis[n] = true
+  setOn1(dis)
+  // setPressed(true)
+  }
+  var show = board.slice()
+  var on = getOn1.slice()
+  var winner = ""
+  const win = ()=>{
+    //Columns
+    if(show[0]!=" " && show[0]==show[3] && show[3]==show[6]){
+      winner=show[0]
+      return true
+    }
+    else if(show[1]!=" " && show[1]==show[4] && show[4]==show[7]){
+      winner=show[1]
+      return true
+    }
+    else if(show[2]!=" " && show[2]==show[5] && show[5]==show[8]){
+      winner = show[2]
+      return true
+    }
+    //Rows
+    else if(show[0]!=" " && show[0]==show[1] && show[1]==show[2]){
+      winner= show[0]
+      return true
+    }
+    else if(show[3]!=" " && show[3]==show[4] && show[4]==show[5]){
+      winner = show[3]
+      return true
+    }
+    else if(show[6]!=" " && show[6]==show[7] && show[7]==show[8]){
+      winner= show[6]
+      return true
+    }
+    
+    //diagonals
+    else if(show[0]!=" " && show[0]==show[4] && show[4]==show[8]){
+      winner=show[0]
+      return true
+    }
+    else if(show[2]!=" " && show[2]==show[4] && show[4]==show[6]){
+      winner=show[2]
+      return true
+    }
+    
   }
   return(
     <View style={{width:'100%'}}>
+      <Text>Player 1: X</Text>
       <View style={{flexDirection:'row',width:'100%'}}>
-      <Pressable style={styles.but} onPress = {()=> abc()} disabled={getOn}> <Text> {getPlayer}</Text> </Pressable>
-      <Pressable style={styles.but} onPress = {()=> abc()} disabled={getOn}> <Text>{getPlayer}</Text> </Pressable>
-      <Pressable style={styles.but} onPress = {()=> abc()} disabled={getOn} > <Text>{getPlayer}</Text> </Pressable>
+      <Pressable style={styles.but} onPress = {()=> abc(0)} disabled={on[0]}> <Text> {show[0]}</Text> </Pressable>
+      <Pressable style={styles.but} onPress = {()=> abc(1)} disabled={on[1]}> <Text> {show[1]}</Text> </Pressable>
+      <Pressable style={styles.but} onPress = {()=> abc(2)} disabled={on[2]}> <Text>{show[2]}</Text> </Pressable>
 
       </View>
       <View style={{flexDirection:'row'}}>
 
-      <Pressable style={styles.but} onPress = {()=> abc()} disabled={getOn}> <Text>{getPlayer}</Text> </Pressable>
-      <Pressable style={styles.but} onPress = {()=> abc()} disabled={getOn}> <Text>{getPlayer}</Text> </Pressable>
-      <Pressable style={styles.but} onPress = {()=> abc()} disabled={getOn}> <Text>{getPlayer}</Text> </Pressable>
+      <Pressable style={styles.but} onPress = {()=> abc(3)} disabled={on[3]}> <Text>{show[3]}</Text> </Pressable>
+      <Pressable style={styles.but} onPress = {()=> abc(4)} disabled={on[4]}> <Text>{show[4]}</Text> </Pressable>
+      <Pressable style={styles.but} onPress = {()=> abc(5)} disabled={on[5]}> <Text>{show[5]}</Text> </Pressable>
       </View>
       <View style={{flexDirection:'row'}}>
 
-      <Pressable style={styles.but} onPress = {()=> abc()} disabled={getOn}> <Text>{getPlayer}</Text> </Pressable>
-      <Pressable style={styles.but} onPress = {()=> abc()} disabled={getOn}> <Text>{getPlayer}</Text> </Pressable>
-      <Pressable style={styles.but} onPress = {()=> abc()} disabled={getOn}> <Text>{getPlayer}</Text> </Pressable>
+      <Pressable style={styles.but} onPress = {()=> abc(6)} disabled={on[6]}> <Text>{show[6]}</Text> </Pressable>
+      <Pressable style={styles.but} onPress = {()=> abc(7)} disabled={on[7]}> <Text>{show[7]}</Text> </Pressable>
+      <Pressable style={styles.but} onPress = {()=> abc(8)} disabled={on[8]}> <Text>{show[8]}</Text> </Pressable>
       </View>
+      <Text>Player 2: O</Text>
+      <Text>{win() ? props.func(winner):""}</Text>
     </View>
 
+  )
+}
+
+const Winscreen = (props)=>{
+  console.log("winscreen "+props.winner)
+  return(
+    <Text style={{fontSize:30}}> {props.winner} Wins!</Text>
   )
 }
 
@@ -54,16 +115,23 @@ const StartComp = ()=>{
  const App = () => {
 
   const [isStarted,Start] = React.useState(false)
+  const [won,setWon] = React.useState(false)
   const but =   <Button title="Start" onPress = {()=> {Start(true)}}/>
-
+  let ans = ""
   const calc =   <MainComp/>
 
+  const passfunc = (winner)=>{
+    ans=winner
+    console.log(ans)
+    setWon(true)
+  }
   return (
       <View style={styles.container}>
       {/* <StartComp/> */}
         <View style={styles.lefte}>
           {!isStarted && <Button title="Start" onPress = {()=> {Start(true)}}/>}
-          {isStarted && <MainComp/>}
+          {isStarted && !won && <MainComp func={passfunc}/>}
+          {won && <Winscreen winner={ans}/>}
         {/* {!isStarted? but:null}
         {isStarted? calc:null} */}
         </View>
@@ -90,7 +158,7 @@ const styles = StyleSheet.create({
     fontSize: 20    
   },
   but:{
-    borderWidth:1, backgroundColor:'blue',width:50, borderColor:'white', alignItems:'center'
+    borderWidth:1, backgroundColor:'white',width:50, borderColor:'black', alignItems:'center'
   }
 });
 
