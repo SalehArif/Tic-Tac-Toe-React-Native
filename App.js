@@ -3,8 +3,8 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, Alert, Pressable } from 'react-native';
 
 const win = (show)=>{
-  //Columns
-  var winner=""
+  
+  var winner=null
   if(show[0]!=" " && show[0]==show[3] && show[3]==show[6]){
     winner=show[0]
     return winner
@@ -17,7 +17,7 @@ const win = (show)=>{
     winner = show[2]
     return winner
   }
-  //Rows
+  
   else if(show[0]!=" " && show[0]==show[1] && show[1]==show[2]){
     winner= show[0]
     return winner
@@ -31,7 +31,7 @@ const win = (show)=>{
     return winner
   }
   
-  //diagonals
+  
   else if(show[0]!=" " && show[0]==show[4] && show[4]==show[8]){
     winner=show[0]
     return winner
@@ -40,7 +40,7 @@ const win = (show)=>{
     winner=show[2]
     return winner
   }
-  return ""
+  return winner
 }
 
 const MainComp = (props)=>{
@@ -53,54 +53,66 @@ const MainComp = (props)=>{
   let arr = board.slice()
   let dis = getOn1.slice()
   if(getTurn===true){
-    // setPlayer("X")
     arr[n]="X"
     setTurn(false)
   }
   else{
-    // setPlayer("O")
     arr[n] = "O"
     setTurn(true)  
   }
   setBoard(arr)
   dis[n] = true
   setOn1(dis)
-  // setPressed(true)
+
   }
   var show = board.slice()
   var on = getOn1.slice()
-  var winner = ""
+  var winner = null
   
   return(
     <View style={{width:'100%'}}>
       <Text>Player 1: X</Text>
-      <View style={{flexDirection:'row',width:'100%'}}>
-      <Pressable style={styles.but} onPress = {()=> abc(0)} disabled={on[0]}> <Text> {show[0]}</Text> </Pressable>
-      <Pressable style={styles.but} onPress = {()=> abc(1)} disabled={on[1]}> <Text> {show[1]}</Text> </Pressable>
-      <Pressable style={styles.but} onPress = {()=> abc(2)} disabled={on[2]}> <Text>{show[2]}</Text> </Pressable>
-
-      </View>
-      <View style={{flexDirection:'row'}}>
-
-      <Pressable style={styles.but} onPress = {()=> abc(3)} disabled={on[3]}> <Text>{show[3]}</Text> </Pressable>
-      <Pressable style={styles.but} onPress = {()=> abc(4)} disabled={on[4]}> <Text>{show[4]}</Text> </Pressable>
-      <Pressable style={styles.but} onPress = {()=> abc(5)} disabled={on[5]}> <Text>{show[5]}</Text> </Pressable>
-      </View>
-      <View style={{flexDirection:'row'}}>
-
-      <Pressable style={styles.but} onPress = {()=> abc(6)} disabled={on[6]}> <Text>{show[6]}</Text> </Pressable>
-      <Pressable style={styles.but} onPress = {()=> abc(7)} disabled={on[7]}> <Text>{show[7]}</Text> </Pressable>
-      <Pressable style={styles.but} onPress = {()=> abc(8)} disabled={on[8]}> <Text>{show[8]}</Text> </Pressable>
-      </View>
       <Text>Player 2: O</Text>
-      <Text>{win(show)=="X" ? props.func("X"): win(show)=="O"? props.func("O"):""}</Text>
+      <View style={{flexDirection:'row',width:'100%'}}>
+        <Pressable style={styles.but} onPress = {()=> abc(0)} disabled={on[0]}>
+           <Text> {show[0]}</Text>
+        </Pressable>
+        <Pressable style={styles.but} onPress = {()=> abc(1)} disabled={on[1]}>
+          <Text> {show[1]}</Text> 
+        </Pressable>
+        <Pressable style={styles.but} onPress = {()=> abc(2)} disabled={on[2]}>
+          <Text>{show[2]}</Text>
+        </Pressable>
+      </View>
+      <View style={{flexDirection:'row'}}>
+        <Pressable style={styles.but} onPress = {()=> abc(3)} disabled={on[3]}>
+          <Text>{show[3]}</Text>
+        </Pressable>
+        <Pressable style={styles.but} onPress = {()=> abc(4)} disabled={on[4]}>
+          <Text>{show[4]}</Text>
+        </Pressable>
+        <Pressable style={styles.but} onPress = {()=> abc(5)} disabled={on[5]}>
+          <Text>{show[5]}</Text>
+        </Pressable>
+      </View>
+      <View style={{flexDirection:'row'}}>
+        <Pressable style={styles.but} onPress = {()=> abc(6)} disabled={on[6]}>
+          <Text>{show[6]}</Text>
+        </Pressable>
+        <Pressable style={styles.but} onPress = {()=> abc(7)} disabled={on[7]}>
+          <Text>{show[7]}</Text>
+        </Pressable>
+        <Pressable style={styles.but} onPress = {()=> abc(8)} disabled={on[8]}>
+          <Text>{show[8]}</Text>
+        </Pressable>
+      </View>
+      <Text>{win(show)=="X" ? props.func("X"): win(show)=="O"? props.func("O"):null}</Text>
     </View>
 
   )
 }
 
 const Winscreen = (props)=>{
-  console.log("winscreen "+props.winner)
   return(
     <Text style={{fontSize:30}}> {props.winner} Wins!</Text>
   )
@@ -111,17 +123,13 @@ const StartComp = ()=>{
     <View style={styles.lefte}>
       <Button title="Start" onPress = {()=> {}}/>
     </View>
-
   )
 }
  const App = () => {
 
   const [isStarted,Start] = React.useState(false)
   const [won,setWon] = React.useState(false)
-  const [winner,setWinner] = React.useState("")
-  const but =   <Button title="Start" onPress = {()=> {Start(true)}}/>
-  // let ans = ""
-  const calc =   <MainComp/>
+  const [winner,setWinner] = React.useState(null)
 
   const passfunc = (winner)=>{
     setWinner(winner)
@@ -129,13 +137,10 @@ const StartComp = ()=>{
   }
   return (
       <View style={styles.container}>
-      {/* <StartComp/> */}
         <View style={styles.lefte}>
-          {!isStarted && <Button title="Start" onPress = {()=> {Start(true)}}/>}
-          {isStarted && !won && <MainComp func={passfunc}/>}
-          {won && <Winscreen winner={winner}/>}
-        {/* {!isStarted? but:null}
-        {isStarted? calc:null} */}
+          {!isStarted ? <Button title="Start" onPress = {()=> {Start(true)}}/>:null}
+          {isStarted ? <MainComp func={passfunc}/>:null}
+          {won ? <Winscreen winner={winner}/>:null}
         </View>
       </View>
   );
@@ -152,7 +157,6 @@ const styles = StyleSheet.create({
     fontSize: 25
   },
   lefte: {
-    // justifyContent: 'flex-start',
     marginTop: 30
   },
   sep: {
