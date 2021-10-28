@@ -139,7 +139,7 @@ const StartComp = ()=>{
       <View style={styles.container}>
         <View style={styles.lefte}>
           {!isStarted ? <Button title="Start" onPress = {()=> {Start(true)}}/>:null}
-          {isStarted ? <MainComp func={passfunc}/>:null}
+          {isStarted && !won ? <MainComp func={passfunc}/>:null}
           {won ? <Winscreen winner={winner}/>:null}
         </View>
       </View>
