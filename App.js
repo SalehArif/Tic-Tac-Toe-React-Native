@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, Button, Alert, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Button, Alert, Pressable, Modal } from 'react-native';
 
 const win = (show)=>{
   
@@ -106,7 +106,7 @@ const MainComp = (props)=>{
           <Text>{show[8]}</Text>
         </Pressable>
       </View>
-      <Text>{win(show)=="X" ? props.func("X"): win(show)=="O"? props.func("O"):null}</Text>
+      <Text>{win(show)=="X" ? props.func("Player 1"): win(show)=="O"? props.func("Player 2"):null}</Text>
     </View>
 
   )
@@ -114,7 +114,12 @@ const MainComp = (props)=>{
 
 const Winscreen = (props)=>{
   return(
-    <Text style={{fontSize:30}}> {props.winner} Wins!</Text>
+    <Modal animationType="slide" visible={true}>
+      <View style={styles.container}>
+      <Text style={{fontSize:30}}> {props.winner} Wins!</Text>
+      <Button title="Play Again" onPress={()=>props.replay()}></Button>
+      </View>
+    </Modal>
   )
 }
 
@@ -135,12 +140,17 @@ const StartComp = ()=>{
     setWinner(winner)
     setWon(true)
   }
+  const reset = ()=>{
+    Start(false)
+    setWon(false)
+    setWinner(null)
+  }
   return (
       <View style={styles.container}>
         <View style={styles.lefte}>
           {!isStarted ? <Button title="Start" onPress = {()=> {Start(true)}}/>:null}
           {isStarted && !won ? <MainComp func={passfunc}/>:null}
-          {won ? <Winscreen winner={winner}/>:null}
+          {won ? <Winscreen winner={winner} replay={reset}/>:null}
         </View>
       </View>
   );
